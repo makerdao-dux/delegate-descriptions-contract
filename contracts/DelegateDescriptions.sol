@@ -11,7 +11,7 @@ import "./interfaces/IDelegatesFactory.sol";
 contract DelegateDescriptions is Ownable {
     // Struct to store the delegate hash and the hash type
     struct delegateHash {
-        bytes32 hash;
+        string hash;
         uint256 hashType;
     }
     
@@ -23,7 +23,7 @@ contract DelegateDescriptions is Ownable {
     mapping(uint256 => bytes32) public hashTypes;
 
     // Mapping to store the root file hashes
-    mapping(uint256 => bytes32) public rootFileHashes;
+    mapping(uint256 => string) public rootFileHashes;
 
     address payable public govAlphaAddress;
     
@@ -54,10 +54,10 @@ contract DelegateDescriptions is Ownable {
     }
 
     // Event to be emitted when a delegate hash is set
-    event DelegateHashChanged(address delegateContractAddress, bytes32 delegateHash, uint256 hashType);
+    event DelegateHashChanged(address delegateContractAddress, string delegateHash, uint256 hashType);
 
     // Sets a delegate hash for a delegate contract address. Only the owner of the delegate contract can do this
-    function setDelegateHash(address delegateContractAddress, bytes32 _delegateHash, uint256 hashType) public {
+    function setDelegateHash(address delegateContractAddress, string memory _delegateHash, uint256 hashType) public {
         // Sender has to be a delegate
         require(delegatesFactory.isDelegate(msg.sender), "INVALID_DELEGATE_CONTRACT_ADDRESS");
         // delegateContractAddress has to be owned by the sender
@@ -71,10 +71,10 @@ contract DelegateDescriptions is Ownable {
     }
 
     // Event to be emitted when a root file hash is set
-    event RootFileHashChanged(bytes32 rootFileHash, uint256 hashType);
+    event RootFileHashChanged(string rootFileHash, uint256 hashType);
 
     // Set the hashes for the delegates index
-    function setRootFileHash(bytes32 hash, uint256 _hashType) public {
+    function setRootFileHash(string memory hash, uint256 _hashType) public {
         // Sender has to be the govAlphaAddress
         require(msg.sender == govAlphaAddress, "INVALID_GOVALPHA_ADDRESS");
         // hashType has to be a valid hash type
@@ -94,7 +94,7 @@ contract DelegateDescriptions is Ownable {
         // Set the default hash types
         hashTypes[1] = "IPFS";
         hashTypes[2] = "ARWEAVE";
-        
+
     }
 
 }
